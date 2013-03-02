@@ -1,15 +1,15 @@
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <signal.h>
-#include <time.h>
+       #include <unistd.h>
+       #include <stdio.h>
+       #include <signal.h>
+       #include <time.h>
 
 enum{
 	ONE_SHOT,
 	PERIODIC
 };
 
-timer_t periodic[3];
+timer_t firstTimerID, secondTimerID;
 timer_t oneshot1, oneshot2;
 
 
@@ -19,16 +19,14 @@ timerHandler( int sig, siginfo_t *si, void *uc )
     timer_t *tidp;
     tidp = si->si_value.sival_ptr;
 
-    if ( *tidp == periodic[0] )
-        printf("first_timer \n");
-    else if ( *tidp == periodic[1] )
-		printf("second_timer \n");
-    else if ( *tidp == periodic[2] )
-		printf("third_timer \n");
+    if ( *tidp == firstTimerID )
+        printf("first\n");
+    else if ( *tidp == secondTimerID )
+		printf("second\n");
     else if( *tidp == oneshot1)
-		printf("first one-shot \n");
+		printf("first one shot\n");
     else if( *tidp== oneshot2)
-		printf("second one-shot \n");
+		printf("second one -shot \n");
 }
 
 int
@@ -78,30 +76,12 @@ makeTimer(timer_t *timerID, int expireMS, int intervalMS, int mode )
 int main(int argc, char* argv[]){
 
 	int rc;
-        rc = makeTimer(&periodic[0], 60, 60, PERIODIC);
-		rc = makeTimer(&periodic[1], 120, 120, PERIODIC);
-		rc = makeTimer(&periodic[2], 180, 180, PERIODIC);
-  		rc = makeTimer(&oneshot1, 240, 0, ONE_SHOT);
-		rc = makeTimer(&oneshot2, 300, 0, ONE_SHOT);
+        rc = makeTimer(&firstTimerID, 40, 40, PERIODIC);
+	rc = makeTimer(&secondTimerID, 120, 120, PERIODIC);
+        rc = makeTimer(&oneshot1, 50, 0, ONE_SHOT);
+	rc = makeTimer(&oneshot2, 130, 0, ONE_SHOT);
 
-	int i = 0;	
-	printf("Entering main loop\n");		
-	while(1){
-		i++;
-		sleep(1);
-		if(i==60){
-				// one option
-				rc = makeTimer(&periodic[0], 0, 0, PERIODIC);
-				rc = makeTimer(&periodic[1], 0, 0, PERIODIC);
-				rc = makeTimer(&periodic[2], 0, 0, PERIODIC);
-				// more 
-				timer_delete(periodic[0]);
-				timer_delete(periodic[1]);
-				timer_delete(periodic[2]);
-		printf("finished processing\n");		
-		break;
-		}
-	}
+	while(1);
 
 return 0;
 }
