@@ -52,16 +52,22 @@ int main()
 		}
 
 			/* print the results */
-		printf( "X: %6d  Y: %6d  ", axis[0], axis[1] );
+		printf( "AX0: %6d  AX1: %6d  ", axis[0], axis[1] );
 		
 		if( num_of_axis > 2 )
-			printf("Z: %6d  ", axis[2] );
+			printf("AX2: %6d  ", axis[2] );
 			
 		if( num_of_axis > 3 )
-			printf("R: %6d  ", axis[3] );
+			printf("AX3: %6d  ", axis[3] );
+
+		if( num_of_axis > 4 )
+			printf("AX4: %6d ", axis[4]);
+	
+		if( num_of_axis > 5 )
+			printf("AX5: %6d ", axis[5]);
 			
 		for( x=0 ; x<num_of_buttons ; ++x )
-			printf("B%d: %d  ", x, button[x] );
+			printf(" B%d: %d  ", x, button[x] );
 
 		printf("  \r");
 		fflush(stdout);
