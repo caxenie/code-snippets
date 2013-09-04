@@ -6,10 +6,10 @@
 #define VAL_NUMB	5
 #define VALUE_LEN	VAL_SIGN+VAL_NUMB
 
-#define MASK_GYROZ		20
-#define MASK_WHL_ONE		27
-#define MASK_WHL_TWO		34
-#define MASK_WHL_THREE		41	
+#define MASK_GYROZ		41
+#define MASK_WHL_ONE		6
+#define MASK_WHL_TWO		13
+#define MASK_WHL_THREE		20	
 #define MASK_COMPH		69
 #define RING_BUFFER_SIZE 	 8
 
@@ -18,8 +18,16 @@
 int main(int argc, char*argv[])
 {
 
-	char* test = "-I38: +00000 +00000 +00099 +00001 +00002 +00003 +00000 +00123 -00138 -00168\n";
+	char* test = "-I38: +00001 +00002 +00003 +00000 +00000 +00099 +00000 +00123 -00138 -00168\n";
 	printf("Size is : %d \n", strlen(test));
+
+	printf("GYRO RAW %s\n", strndup(test+MASK_GYROZ, VALUE_LEN), NULL);
+        printf("WH1 RAW %s\n", strndup(test+MASK_WHL_ONE, VALUE_LEN), NULL);
+        printf("WH2 RAW %s\n", strndup(test+MASK_WHL_TWO, VALUE_LEN), NULL);
+        printf("WH3 RAW %s\n", strndup(test+MASK_WHL_THREE, VALUE_LEN), NULL);
+        printf("COMPH RAW %s\n", strndup(test+MASK_COMPH, VALUE_LEN), NULL);
+
+
 	printf("GYRO %lf\n", strtod(strndup(test+MASK_GYROZ, VALUE_LEN), NULL)/RING_BUFFER_SIZE);
 	printf("WH1 %lf\n", strtod(strndup(test+MASK_WHL_ONE, VALUE_LEN), NULL)/RING_BUFFER_SIZE);
 	printf("WH2 %lf\n", strtod(strndup(test+MASK_WHL_TWO, VALUE_LEN), NULL)/RING_BUFFER_SIZE);
